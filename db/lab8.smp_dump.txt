@@ -1,0 +1,83 @@
+
+State Machine - |lab8|explosion:explosion_instance|State
+Name State.Game_Over State.explode3 State.explode2 State.explode1 State.explode0 State.Start 
+State.Start 0 0 0 0 0 0 
+State.explode0 0 0 0 0 1 1 
+State.explode1 0 0 0 1 0 1 
+State.explode2 0 0 1 0 0 1 
+State.explode3 0 1 0 0 0 1 
+State.Game_Over 1 0 0 0 0 1 
+
+State Machine - |lab8|missile:missile_instance|State
+Name State.Hit_Off State.Trans State.Hit_On 
+State.Hit_Off 0 0 0 
+State.Hit_On 1 0 1 
+State.Trans 1 1 0 
+
+State Machine - |lab8|enemy:enemy_instance|type_of_enemy3
+Name type_of_enemy3.00000 type_of_enemy3.00100 type_of_enemy3.00011 
+type_of_enemy3.00000 0 0 0 
+type_of_enemy3.00011 1 0 1 
+type_of_enemy3.00100 1 1 0 
+
+State Machine - |lab8|enemy:enemy_instance|type_of_enemy2
+Name type_of_enemy2.00000 type_of_enemy2.00110 type_of_enemy2.00101 
+type_of_enemy2.00000 0 0 0 
+type_of_enemy2.00101 1 0 1 
+type_of_enemy2.00110 1 1 0 
+
+State Machine - |lab8|enemy:enemy_instance|type_of_enemy
+Name type_of_enemy.00000 type_of_enemy.00010 type_of_enemy.00001 
+type_of_enemy.00000 0 0 0 
+type_of_enemy.00001 1 0 1 
+type_of_enemy.00010 1 1 0 
+
+State Machine - |lab8|gamestate:game_1|State
+Name State.Start State.Game_Over State.level_1 
+State.Start 0 0 0 
+State.level_1 1 0 1 
+State.Game_Over 1 1 0 
+
+State Machine - |lab8|nios_system:nios_system|nios_system_sdram:sdram|m_next
+Name m_next.010000000 m_next.000010000 m_next.000001000 m_next.000000001 
+m_next.000000001 0 0 0 0 
+m_next.000001000 0 0 1 1 
+m_next.000010000 0 1 0 1 
+m_next.010000000 1 0 0 1 
+
+State Machine - |lab8|nios_system:nios_system|nios_system_sdram:sdram|m_state
+Name m_state.100000000 m_state.010000000 m_state.001000000 m_state.000100000 m_state.000010000 m_state.000001000 m_state.000000100 m_state.000000010 m_state.000000001 
+m_state.000000001 0 0 0 0 0 0 0 0 0 
+m_state.000000010 0 0 0 0 0 0 0 1 1 
+m_state.000000100 0 0 0 0 0 0 1 0 1 
+m_state.000001000 0 0 0 0 0 1 0 0 1 
+m_state.000010000 0 0 0 0 1 0 0 0 1 
+m_state.000100000 0 0 0 1 0 0 0 0 1 
+m_state.001000000 0 0 1 0 0 0 0 0 1 
+m_state.010000000 0 1 0 0 0 0 0 0 1 
+m_state.100000000 1 0 0 0 0 0 0 0 1 
+
+State Machine - |lab8|nios_system:nios_system|nios_system_sdram:sdram|i_next
+Name i_next.111 i_next.101 i_next.010 i_next.000 
+i_next.000 0 0 0 0 
+i_next.010 0 0 1 1 
+i_next.101 0 1 0 1 
+i_next.111 1 0 0 1 
+
+State Machine - |lab8|nios_system:nios_system|nios_system_sdram:sdram|i_state
+Name i_state.111 i_state.101 i_state.011 i_state.010 i_state.001 i_state.000 
+i_state.000 0 0 0 0 0 0 
+i_state.001 0 0 0 0 1 1 
+i_state.010 0 0 0 1 0 1 
+i_state.011 0 0 1 0 0 1 
+i_state.101 0 1 0 0 0 1 
+i_state.111 1 0 0 0 0 1 
+
+State Machine - |lab8|nios_system:nios_system|nios_system_nios2_qsys_0:nios2_qsys_0|nios_system_nios2_qsys_0_cpu:cpu|nios_system_nios2_qsys_0_cpu_nios2_oci:the_nios_system_nios2_qsys_0_cpu_nios2_oci|nios_system_nios2_qsys_0_cpu_debug_slave_wrapper:the_nios_system_nios2_qsys_0_cpu_debug_slave_wrapper|nios_system_nios2_qsys_0_cpu_debug_slave_tck:the_nios_system_nios2_qsys_0_cpu_debug_slave_tck|DRsize
+Name DRsize.101 DRsize.100 DRsize.011 DRsize.010 DRsize.001 DRsize.000 
+DRsize.000 0 0 0 0 0 0 
+DRsize.001 0 0 0 0 1 1 
+DRsize.010 0 0 0 1 0 1 
+DRsize.011 0 0 1 0 0 1 
+DRsize.100 0 1 0 0 0 1 
+DRsize.101 1 0 0 0 0 1 

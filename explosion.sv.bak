@@ -1,0 +1,85 @@
+module explosion(	input Reset, frame_clk, explode,
+					output logic game_over, explosion0, explosion1, explosion2, explosion3;
+				);
+					  
+
+enum logic [4:0] {Start, explode0, explode1, explode2, explode3, Game_Over}   State, Next_state;   // Internal state logic
+
+  always_ff @ (posedge Reset or posedge frame_clk  )
+    begin : Assign_Next_State
+        if (Reset)
+        	begin
+				State <= Start; 
+		  	else 
+            State <= Next_state;
+    end	
+
+//NEXT STATE
+	always_comb
+    begin 
+	    Next_state  = State;
+        unique case (State)
+            Start : 
+	            if (explode == 1) //Enter or SPACE
+					Next_state <= explode0;	
+				else
+					Next_state <= Start;
+			explode0 : 
+					Next_state <= explode1;
+			explode1 : 
+					Next_state <= explode2;
+			explode2 : 
+					Next_state <= explode3;
+			explode3 : 
+					Next_state <= Game_Over;
+			Game_Over: 
+				if (key == 8'h28 || key == 8'h2c || key == 8'h1a) //Enter or SPACE or w
+					Next_state <= start;
+   			default : ;
+
+	     endcase
+    end	
+
+	always_ff @ (posedge Reset or posedge frame_clk  )
+    begin 
+        //default controls signal values; within a process, these can be
+        //overridden further down (in the case statement, in this case)
+		explosion0 <= 0;
+		explosion1 <= 0;
+		explosion2 <= 0;
+		explosion3 <= 0;
+		game_over  <= 0;
+		 
+	    case (State)
+			Start : 
+					game_over <= 0;
+
+			explode0 : 
+				begin
+					explosion0 <= 1;
+				end
+			explode1 : 
+				begin
+					explosion1 <= 1;
+				end
+			explode2 : 
+				begin
+					explosion2 <= 1;
+				end
+			explode3 : 
+				begin
+					explosion3 <= 1;
+				end
+
+			Game_Over : 
+				begin 
+					game_over <= 1;
+            	end
+          default : ;
+           
+			  
+		endcase
+       
+	end 	
+	
+endmodule

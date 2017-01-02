@@ -1,0 +1,48 @@
+//copies a sprite from the SRAM into the specified position in the frame buffer in SRAM
+module drawing_engine (	input 					clk,
+						input					start_draw,
+						input [7:0]				sprite_num,
+						input [8:0]				x_pos,
+						input [7:0]				y_pos,
+						input [0:3][0:15][0:15]	player,
+						output logic [3:0]		data_Out,
+						output logic [18:0]		write_addr,
+						output logic 			we,
+						output logic 			draw_done		
+);
+
+logic [5:0] col, row;
+
+//read sprite from spritetable ROM
+//write sprite to frameRAM
+always_ff @ (posedge Clk) begin
+	if (!start_draw) begin
+		col <= 8'b0;
+		row <= 8'b0;
+		draw_done <= 0'b0;
+	end
+
+	if (row==16) begin
+		draw_done <= 1'b1;
+		row <= 1'b0;
+	end
+end
+
+always_comb begin
+	we=1'b0;
+
+	write_addr = x_pos + (y_pos*224) + col + (row*224);
+	data_Out = player[col][row];
+
+	if (player[col][row] && start_draw)
+		we=1;
+
+	if(start_draw)
+		col=col+1'b1;
+	if (col>15) begin
+		row=row+1'b1;
+		col=1'b0;
+	end
+end
+
+endmodule

@@ -1,0 +1,105 @@
+module gamestate(	input Reset, frame_clk, collision, hit1, hit2
+					input [7:0] key,
+					output logic lost_game, level, new_ship,
+				 	output logic [1:0] lives,
+					output logic [8:0] hi_score, score1, score2
+				);
+					  
+
+enum logic [3:0] {Start, level_1, Game_Over}   State, Next_state;   // Internal state logic
+
+  always_ff @ (posedge Reset or posedge frame_clk  )
+    begin : Assign_Next_State
+        if (Reset)
+            State <= Start;
+        	lives <= 2'd3;
+        else 
+            State <= Next_state;
+    end	
+
+//NEXT STATE
+	always_comb
+    begin 
+	    Next_state  = State;
+
+        unique case (State)
+            Start : 
+	            if (key == 8'h28 || key == 8'h2c) //Enter or SPACE
+					Next_state <= level_1;	
+
+			level_1 : 
+				if(lives <= 0)
+					Next_state <= Game_Over;
+						
+			Game_Over: 
+				if (key == 8'h28 || key == 8'h2c || key == 8'h1a) //Enter or SPACE or w
+					Next_state <= level_1;
+            
+			default : ;
+
+	     endcase
+    end	
+
+    always_comb
+    begin
+    	if (collision)
+	     	lives = lives - 1'b1;
+	end
+
+//ACTION AT EACH STATE
+   //always_comb
+	always_ff @ (posedge Reset or posedge frame_clk  )
+    begin 
+        //default controls signal values; within a process, these can be
+        //overridden further down (in the case statement, in this case)
+		level = 0;
+		lost_game = 0;
+		score1 = score1;
+		score2 = score2;
+		hi_score = hi_score;
+		 
+	    case (State)
+			Start : 
+				begin 
+					score = 0;
+					score1 = 0;
+				end
+
+			level_1 : 
+				begin
+				
+				if (hit1)
+					score1 = score1 + 1;
+
+				if (hit2)					//2nd player makes kill and gets score
+					score2 = score2 + 1;
+
+				if (score1 > hi_score)		//if new hi score
+					hi_score = score1;
+
+				if (score2 > hi_score)		
+					hi_score = score2;
+
+				level = 1;
+				end
+
+			Game_Over : 
+				begin 
+					lost_game=1;
+            end
+        
+          default : ;
+           
+			  
+		endcase
+       
+	end 	
+
+		/*assign lvl = level;
+		assign lost = lost_game;
+		assign lives_left = lives;
+		assign score_1 = score1;
+		assign score_2 = score2;
+		assign hiscore = hi_score;*/
+	
+endmodule

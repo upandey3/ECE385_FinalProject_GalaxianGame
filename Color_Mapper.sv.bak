@@ -1,0 +1,66 @@
+//-------------------------------------------------------------------------
+//    Color_Mapper.sv                                                    --
+//    Stephen Kempf                                                      --
+//    3-1-06                                                             --
+//                                                                       --
+//    Modified by David Kesler  07-16-2008                               --
+//    Translated by Joe Meng    07-07-2013                               --
+//                                                                       --
+//    Fall 2014 Distribution                                             --
+//                                                                       --
+//    For use with ECE 385 Lab 7                                         --
+//    University of Illinois ECE Department                              --
+//-------------------------------------------------------------------------
+
+
+module  color_mapper (  input           [9:0] DrawX, DrawY,
+                        input           [9:0] ShipX, ShipY,
+                        input           [3:0][15:0][15:0] Ship
+                        output logic    [7:0] Red, Green, Blue );
+    
+    logic [3:0] Ship_on;
+	 
+    int DistX, DistY, Size;
+	assign DistX = DrawX - ShipX;
+    assign DistY = DrawY - ShipY;
+    assign Size = 15;
+	  
+    always_comb
+    begin:Ship_on_proc
+        if ( (DistX<=Size) && (DistX>=0) || (DistY<=Size) || (DistY>=0) ) 
+            Ship_on = Ship[DistY][DistX];
+        else 
+            Ship_on = 1'b0;
+     end 
+       
+    always_comb
+    begin:RGB_Display
+/*************************Spaceship**********************************/
+        if ((Ship_on == 4'd2)) 
+        begin 
+            Red = 8'h11;
+            Green = 8'h6B;
+            Blue = 8'hDB;
+        end 
+        else if ((Ship_on == 4'd5)) 
+            begin
+                Red = 8'hDE;
+                Green = 8'hDE;
+                Blue = 8'hDE;
+            end
+        else if ((Ship_on == 4'd6)) 
+        begin 
+            Red = 8'hFC;
+            Green = 8'h29;
+            Blue = 8'h1C;
+        end 
+/************************Black Background****************************/      
+        else
+        begin 
+            Red = 8'h00; 
+            Green = 8'h00;
+            Blue = 8'h00;
+        end      
+    end 
+    
+endmodule
